@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Ninja Gold!</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        body {
+            height: 100%;
+            width: 100%;
+            background-color: black;
+            text-align: center;
+            color: white;
+        }
+
+        h1 {
+            display: block;
+        }
+        #goldstuff{
+            width: 100%;
+            height: 30%;
+        }
+        .locations {
+            width: 22%;
+            display: inline-block;
+            text-align: center;
+            padding-top: 10%;
+        }
+
+        form {
+            padding-top: 70%;
+        }
+
+        #reset {
+            height: 20%;
+            width: 20%;
+            display: inline-block;
+            text-align: center;
+        }
+        #log{
+            text-align: left;
+            display: inline-block;
+            height: 200px;
+            width: 95%;
+            overflow-y: scroll;
+            border: 2px solid white;
+        }
+        .found{
+            color: green;
+        }
+        .lost{
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Your Gold: {{ request.session.gold }}</h1>
+    <div id="goldstuff">
+        <p1 class="locations">
+            Farm
+            <br> (earns 10-20 golds)
+            <form action='/process_money/farm' method='post'>
+                {% csrf_token %}
+                <input type='submit' value='Find Gold!'>
+            </form>
+        </p1>
+        <p2 class="locations">
+            Cave
+            <br> (earns 5-10 golds)
+            <form action='/process_money/cave' method='post'>
+                {% csrf_token %}
+                <input type='submit' value='Find Gold!'>
+            </form>
+        </p2>
+        <p3 class="locations">
+            House
+            <br> (earns 2-5 golds)
+            <form action='/process_money/house' method='post'>
+                {% csrf_token %}
+                <input type='submit' value='Find Gold!'>
+            </form>
+        </p3>
+        <p4 class="locations">
+            Casino
+            <br> (earns -50 - 50 golds)
+            <form action='/process_money/casino' method='post'>
+                {% csrf_token %}
+                <input type='submit' value='Find Gold!'>
+            </form>
+        </p4>
+    </div>
+    <p5 id="reset">
+        <form action='/reset' method='post'>
+            {% csrf_token %}
+            <input type="hidden" name="gold_bag" value="reset">
+            <input type='submit' value='Reset your Gold!'>
+        </form>
+    </p5>
+    <div id="log">
+        {% for log in request.session.logs reversed %}
+        <p class="{{ log.class }}">{{ log.message }}</p>
+        {% endfor %}
+    </div>
+</body>
+
+</html>
